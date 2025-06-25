@@ -8,18 +8,37 @@ jobs:
             - name: Greeting!
               run: echo hello world
     
-    test-python-3-12:
-        name: Check Python 3.12 on Ubuntu
+    test-python-versions:
+        name: Check Python ${{ matrix.python-version }} on Ubuntu
         runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            python-version: [ "3.11", "3.12"]
         steps:
-            - uses: actions/checkout@v3
+          - uses: actions/checkout@v3
 
-            - uses: actions/setup-python@v4
-              with:
-                python-version: "3.12"
+          - uses: actions/setup-python@v4
+            with:
+              python-version: ${{ matrix.python-version }}
             
-            - name: Install package
-              run: python -m pip install -e .[test]
+          - name: Install package
+            run: python -m pip install -e .[test]
 
-            - name: Test package
-              run: python -m pytest
+          - name: Test package
+            run: python -m pytest
+
+    # test-python-3-12:
+    #     name: Check Python 3.12 on Ubuntu
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: actions/checkout@v3
+
+    #         - uses: actions/setup-python@v4
+    #           with:
+    #             python-version: "3.12"
+            
+    #         - name: Install package
+    #           run: python -m pip install -e .[test]
+
+    #         - name: Test package
+    #           run: python -m pytest
